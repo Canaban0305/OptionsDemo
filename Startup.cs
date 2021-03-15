@@ -27,11 +27,18 @@ namespace OptionsDemo
         public void ConfigureServices(IServiceCollection services)
         {
             // 从配置中读取
-            services.Configure<OrderServiceOption>(Configuration.GetSection("OrderService"));
+            //services.Configure<OrderServiceOption>(Configuration.GetSection("OrderService"));
             // 只获取OrderServiceOption默认值
             //services.AddSingleton<OrderServiceOption>();
 
-            services.AddSingleton<IOrderService, OrderService>();
+            // services.AddSingleton<IOrderService, OrderService>();
+
+            // 选项数据热更新：让服务感知配置的变化 -- 范围作用域注册
+            //services.AddScoped<IOrderService, OrderService>();
+            // 选项数据热更新：让服务感知配置的变化 -- 单例模式注册
+            //services.AddSingleton<IOrderService, OrderService>();
+            // 将注册放到静态方法
+            services.AddOrderService(Configuration.GetSection("OrderService"));
             services.AddControllers();
         }
 
